@@ -146,7 +146,7 @@ dbDisconnect(con)
 ```{r}
 diab <- data_raw
 
-diab$Outcome <- factor(diab$Outcome, levels=c(0,1), labels=c("No","Yes"))
+diab$Outcome <- factor(diab$Outcome, levels=c(1,0), labels=c("Yes","No"))
 
 diab <- diab %>% rename("Diabetes" = "Outcome")
 
@@ -402,8 +402,8 @@ train_pre_obj <- preProcess(train_na_df,
                             method = "knnImpute", # medianImpute / bagImpute
                             k = 20) 
 
-train <- predict(train_pre_obj, train_na_df)
-test <- predict(train_pre_obj, test_na_df)
+train <- as.tibble(predict(train_pre_obj, train_na_df))
+test <- as.tibble(predict(train_pre_obj, test_na_df))
 ```
 
 ### Pipeline Step 5: clean_split_data.R
@@ -462,8 +462,6 @@ test <- predict(train_pre_obj, test_na_df)
 ### Checking Class Variable Proportions
 
 ```{r}
-ncolumns <- ncol(train) # Need to grab number of columns for indexing in evaluation steps
-
 prop.table(table(train$Diabetes))
 prop.table(table(test$Diabetes))
 ```
@@ -486,7 +484,7 @@ Estimating performance for classification:
 The function `trainControl` generates parameters that further control how models are created, with possible values:
 
 -   method: resampling method
-    -   cv: divides your training dataset randomly into k-folds (k equalling the *number* parameter) and then using each of k parts as testing dataset for the model trained on other k-1. Takes the average of the k error terms thus obtained.
+    -   cv: divides your training dataset randomly into k-folds (k equaling the *number* parameter) and then using each of k parts as testing dataset for the model trained on other k-1. Takes the average of the k error terms thus obtained.
     -   boot: consists of repeatedly selecting a sample of n observations from the original data set, and to evaluate the model on each copy. An average standard error is then calculated and the results provide an indication of the overall variance of the model performance.
     -   repeatCV: will run cv methodology a total of m-separate times (m equaling the *repeats* parameter)
     -   Many others: [rdocumentation](https://www.rdocumentation.org/packages/caret/versions/6.0-92/topics/trainControl)
@@ -503,7 +501,8 @@ fitControl <- trainControl(method = "cv", # repeatedcv, boot (default)
                              repeats = 5 # default is 1
                            )
 
-metric_targ <- 'Spec' # Sens, ROC, Prec
+metric_targ <- 'Sens' # Spec, ROC, Prec, Sens
+ncolumns <- ncol(train) # Need to grab number of columns for indexing in evaluation steps
 ```
 
 The function `train` sets up a grid of tuning parameters for a number of classification and regression routines, fits each model, and calculates a resampling based performance measure.
@@ -514,7 +513,7 @@ The function `train` sets up a grid of tuning parameters for a number of classif
 
 -   trControl: a list of values that define how this function acts. Where we pass the trainControl object, arguments.
 
--   metric: a string that specifies what summary metric will be used to select the optimal model. By default, possible values are "RMSE" and "Rsquared" for regression and "Accuracy" and "Kappa" for classification.
+-   metric: a string that specifies what summary metric will be used to select the optimal model. By default, possible values are "RMSE" and "Rsquared" for regression and "Accuracy" for classification.
 
 *Logistic Regression (method = 'glm', family = 'binomial')*: The logistic model (or logit model) is a statistical model that models the probability of an event taking place by having the log-odds for the event be a linear combination of one or more independent variables.
 
@@ -648,7 +647,7 @@ An ROC curve is a really useful shortcut for summarizing the performance of a cl
 
 ```{r}
 predict <- predict(learn_dt, test[,-ncolumns],type='prob')
-colAUC(predict, test[,ncolumns], plotROC=TRUE)
+colAUC(predict, array(test[,ncolumns])[[1]], plotROC=TRUE)
 ```
 
 ### Pipeline Step 7: evaluate_model.R
