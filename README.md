@@ -20,7 +20,7 @@ This will launch RStudio Server in a new window. Log in with the username and pa
 
 * NOTE: Sometimes, the RStudio window may fail to open with a timeout error. If this happens, try again, or restart the Codepace.
 
-In RStudio, use the File menu to open the `/workspaces`, folder and then browse to open the file `devcontainers-rstudio`
+In RStudio, use the File menu to open the `/workspaces`, folder and then browse to open the file `health_diabetes_classification`
 
 ## Expectations of this Presentation
 -   This presentation will expand upon the *Good Practices in Reproducible Data Science* presented at the last BD-STEP Roundtable.
