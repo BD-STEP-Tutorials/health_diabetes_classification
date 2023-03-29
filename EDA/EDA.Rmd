@@ -3,7 +3,7 @@ title: "R Exploratory Analysis and Pipeline Building"
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*.
 ---
 
 # R Exploratory Analysis and Pipeline Building
@@ -110,7 +110,7 @@ con %>%
   dbFetch()
 
 # Close the connection and free resources (memory) 
-dbDisconnect(con)
+dbDisconnect(con, shutdown=TRUE)
 ```
 
 ```{r}
@@ -135,7 +135,7 @@ con %>%
   dbFetch()
 
 # Close the connection and free resources (memory) 
-dbDisconnect(con)
+dbDisconnect(con, shutdown=TRUE)
 ```
 
 ## Featurize the Data
@@ -402,8 +402,8 @@ train_pre_obj <- preProcess(train_na_df,
                             method = "knnImpute", # medianImpute / bagImpute
                             k = 20) 
 
-train <- as.tibble(predict(train_pre_obj, train_na_df))
-test <- as.tibble(predict(train_pre_obj, test_na_df))
+train <- as_tibble(predict(train_pre_obj, train_na_df))
+test <- as_tibble(predict(train_pre_obj, test_na_df))
 ```
 
 ### Pipeline Step 5: clean_split_data.R
