@@ -256,7 +256,7 @@ plt <- ggpairs(diab,
 suppressWarnings(print(plt))
 ```
 
--   The Insulin and SkinThickness measurements are not highly correlated with any given outcome \-- and as such we can rule out our concern of data leakage. The zero values in these categories are still erroneous, however, and therefore should not be included in our model.
+-   The Insulin and SkinThickness measurements are not highly correlated with any given outcome \-- and as such we can (possibly) rule out our concern of data leakage. The zero values in these categories are still erroneous, however, and therefore should not be included in our model.
 
 ## Cleaning the Full Data
 

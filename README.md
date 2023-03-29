@@ -35,6 +35,14 @@ In RStudio, use the File menu to open the `/workspaces`, folder and then browse 
 
 ![Flow Chart](/misc/img/flow_diagram.png)
 
+## Contents of the Codespace Directory
+- /.devcontainer: holds files such as the Dockerfile and Requirements.R files which help initialize the requiremetns of the codespace (i.e. the versions of R/Python to be installed, the packages to be included as well as dependencies, etc.)
+- /EDA: holds the RMarkdown file which will be used both for exploratory analysis of the PIMA dataset but also as a presentation report of the findings. 
+- /data: holds the initial PIMA dataset (named diabetes.csv) and will house all populated csv files created throughout the presentation/Rmd run. 
+- /report: holds the final confusion matrix created by the pipeline
+- /src: holds the .R files which make up the pipeline and can be run in sequential order using the makefile
+- makefile: holds the terminal commands to run the pipeline (.R files) and delete all extraneous files built during the run
+
 # Resources and Links
 
 * [GitHub Codespaces](https://github.com/features/codespaces) - Available with GitHub Enterprise and GitHub Education
